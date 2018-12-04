@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Nginx结合Tomcat的简单配置 | Plmnko&#39;s Blog</title>
+    <meta name="description" content="Nginx结合Tomcat的简单配置">
+    <link rel="icon" href="/plmnko-blog/image/pokemon.ico">
+    <meta name="keywords" content="Nginx配置 Tomcat">
+    <link rel="preload" href="/plmnko-blog/assets/css/0.styles.9abbac58.css" as="style"><link rel="preload" href="/plmnko-blog/assets/js/app.acc8b67f.js" as="script"><link rel="preload" href="/plmnko-blog/assets/js/2.842a9afd.js" as="script"><link rel="prefetch" href="/plmnko-blog/assets/js/3.86465eb2.js"><link rel="prefetch" href="/plmnko-blog/assets/js/4.04fe00b5.js"><link rel="prefetch" href="/plmnko-blog/assets/js/5.74586366.js"><link rel="prefetch" href="/plmnko-blog/assets/js/6.f1d77e08.js"><link rel="prefetch" href="/plmnko-blog/assets/js/7.8ec4de43.js"><link rel="prefetch" href="/plmnko-blog/assets/js/8.bd28095f.js">
+    <link rel="stylesheet" href="/plmnko-blog/assets/css/0.styles.9abbac58.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/plmnko-blog/" class="home-link router-link-active"><!----> <span class="site-name">Plmnko's Blog</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/plmnko-blog/" class="nav-link">Home</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Blog</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/plmnko-blog/Android/" class="nav-link">Android</a></li><li class="dropdown-item"><!----> <a href="/plmnko-blog/iOS/" class="nav-link">iOS</a></li><li class="dropdown-item"><h4>Web</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/plmnko-blog/Web/Nginx/load_balancing_strategy.html" class="nav-link">Nginx</a></li><li class="dropdown-subitem"><a href="/plmnko-blog/Web/Vue/vuepress.html" class="nav-link">Vue</a></li></ul></li></ul></div></div><div class="nav-item"><a href="/plmnko-blog/about/" class="nav-link">About</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Languages</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/plmnko-blog/language/chinese/" class="nav-link">Chinese</a></li><li class="dropdown-item"><!----> <a href="/plmnko-blog/language/japanese/" class="nav-link">Japanese</a></li></ul></div></div> <a href="https://github.com/gdmxzy" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Github
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/plmnko-blog/" class="nav-link">Home</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Blog</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/plmnko-blog/Android/" class="nav-link">Android</a></li><li class="dropdown-item"><!----> <a href="/plmnko-blog/iOS/" class="nav-link">iOS</a></li><li class="dropdown-item"><h4>Web</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/plmnko-blog/Web/Nginx/load_balancing_strategy.html" class="nav-link">Nginx</a></li><li class="dropdown-subitem"><a href="/plmnko-blog/Web/Vue/vuepress.html" class="nav-link">Vue</a></li></ul></li></ul></div></div><div class="nav-item"><a href="/plmnko-blog/about/" class="nav-link">About</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Languages</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/plmnko-blog/language/chinese/" class="nav-link">Chinese</a></li><li class="dropdown-item"><!----> <a href="/plmnko-blog/language/japanese/" class="nav-link">Japanese</a></li></ul></div></div> <a href="https://github.com/gdmxzy" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Github
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><div class="sidebar-group first collapsable"><p class="sidebar-heading"><span>Java</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>Angular</span> <span class="arrow right"></span></p> <!----></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading open"><span>Nginx</span> <span class="arrow down"></span></p> <ul class="sidebar-group-items"><li><a href="/plmnko-blog/Web/Nginx/load_balancing_strategy.html" class="sidebar-link">Nginx负载均衡及相关策略</a></li><li><a href="/plmnko-blog/Web/Nginx/nginx_tomcat.html" class="active sidebar-link">Nginx结合Tomcat的简单配置</a><ul class="sidebar-sub-headers"></ul></li></ul></div></li><li><div class="sidebar-group collapsable"><p class="sidebar-heading"><span>Vue</span> <span class="arrow right"></span></p> <!----></div></li></ul> </div> <div class="page"> <div class="content"><h1 id="nginx结合tomcat的简单配置"><a href="#nginx结合tomcat的简单配置" aria-hidden="true" class="header-anchor">#</a> Nginx结合Tomcat的简单配置</h1> <p><strong><a href="http://nginx.org/en/download.html" target="_blank" rel="noopener noreferrer">Nginx官网下载<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></strong></p> <p><strong><a href="https://tomcat.apache.org/download-90.cgi" target="_blank" rel="noopener noreferrer">Tomcat官网下载<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></strong></p> <h4 id="以下用nginx-1-14-1和tomcat9作为演示"><a href="#以下用nginx-1-14-1和tomcat9作为演示" aria-hidden="true" class="header-anchor">#</a> 以下用nginx-1.14.1和Tomcat9作为演示</h4> <h3 id="启动nginx"><a href="#启动nginx" aria-hidden="true" class="header-anchor">#</a> 启动nginx</h3> <p>在cmd中切换目录至F:\nginx-1.14.1(nginx解压后的根目录)并执行命令<code>start nginx</code></p> <div class="language- line-numbers-mode"><pre class="language-text"><code>F:\nginx-1.14.1\start nginx
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div> <p>访问<code>http://localhost</code>(或<code>http://localhost:80</code>)出现如下界面则nginx启动成功</p> <p><img src="/plmnko-blog/assets/img/nginx_init.8d14c7b6.png" alt="avatar"></p> <p>当前<code>nginx.conf</code>配置如下：</p> <div class="language-conf line-numbers-mode"><pre class="language-text"><code>server {
+        listen       80;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+
+        #error_page  404              /404.html;
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br></div></div><p><code>80</code>为当前监听端口，<code>localhost</code>为请求都转发到本地nginx文件夹，<code>location /</code>表示所有请求都将被拦截，<code>root</code>表示当路径匹配时会从文件夹内寻找对应文件，<code>index</code>表示当没有指定主页时默认选择此为指定文件（可指定多个，并且是顺序加载的）</p> <h3 id="启动tomcat"><a href="#启动tomcat" aria-hidden="true" class="header-anchor">#</a> 启动tomcat</h3> <p>解压tomcat后直接在bin目录下运行startup.bat，就可以启动Tomcat(注：tomcat无需配置环境变量)；源码中已经解释如果<code>CATALINA_HOME</code>为空会把当前目录设置为<code>CATALINA_HOME</code>的值……</p> <p><img src="/plmnko-blog/assets/img/catalina.5df76424.png" alt="avatar"></p> <h3 id="proxy-pass代理转发"><a href="#proxy-pass代理转发" aria-hidden="true" class="header-anchor">#</a> proxy_pass代理转发</h3> <div class="language-conf line-numbers-mode"><pre class="language-text"><code>server {
+        listen       80;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            proxy_pass   http://localhost:8080;
+        }
+
+        #error_page  404              /404.html;
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><p>通过<code>proxy_pass</code>配置请求转发地址,当访问<code>localhost</code>的<code>80</code>端口时，请求会跳转至<code>localhost</code>的<code>8080</code>端口处（tomcat）；修改完nginx.conf后不需要重启nginx，执行命令<code>nginx -s -reload</code>即可重新加载</p> <p><img src="/plmnko-blog/assets/img/tomcat.ab707e0e.png" alt="avatar"></p> <p>其他命令：</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>F:\nginx-1.14.1\nginx -t    (检查错误)
+F:\nginx-1.14.1\nginx -s -reload    (重新加载)
+F:\nginx-1.14.1\nginx -s -quit    (安全关闭)
+F:\nginx-1.14.1\nginx -s -stop    (强制关闭)
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>如果多次加载仍然报<code>400</code>/<code>404</code>错误，可尝试执行如下命令把当前所有nginx.exe进程kill掉，重新启动nginx</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>tasklist /fi “imagename eq nginx.exe”   (查看所有nginx.exe)
+taskkill /f /t /im nginx.exe    (关闭所有nginx.exe)
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><h3 id="静态文件分离配置"><a href="#静态文件分离配置" aria-hidden="true" class="header-anchor">#</a> 静态文件分离配置</h3> <p>通过区分文件类型进行过滤，由于<code>nginx</code>不是<code>servlet</code>容器，无法处理<code>jsp</code>，所以<code>jsp</code>直接交给<code>tomcat</code>处理，而<code>html,js,css，png</code>等这些不需要处理的直接交给<code>nginx</code>进行缓存。这时主要用到的元素是location，同时涉及到一部分正则表达式，具体配置如下：</p> <div class="language-conf line-numbers-mode"><pre class="language-text"><code>server {
+        listen       80;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location ~ \.jsp$ {
+            proxy_pass   http://localhost:8080;
+        }
+        
+        location ~ \.(html|css|js|png|gif)$ {
+            root   F:/apache-tomcat-9.0.13/webapps/ROOT;
+        }
+
+        #error_page  404              /404.html;
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br></div></div><p>此时再此访问<code>localhost</code>会报<code>404</code>错误</p> <p><img src="/plmnko-blog/assets/img/404.1cbd05c5.png" alt="avatar"></p> <p>但是输入<code>localhost/index.jsp</code>，则一样可以跳转至<code>tomcat</code>页面</p> <p><img src="/plmnko-blog/assets/img/index.9635c375.png" alt="avatar"></p> <p>点击<code>Manager Application HOW-TO</code>，则又出现<code>404</code>错误；因为这是个<code>html</code>页面，当<code>location</code>匹配到<code>html</code>时，会到<code>root</code>目录下去找，但它并不在<code>root</code>目录下，而是在<code>docs</code>目录下，所以找不到这个页面</p> <p><img src="/plmnko-blog/assets/img/howto.55fc89e4.png" alt="avatar"></p> <h3 id="使用负载均衡（加权轮询策略）"><a href="#使用负载均衡（加权轮询策略）" aria-hidden="true" class="header-anchor">#</a> 使用负载均衡（加权轮询策略）</h3> <div class="language-conf line-numbers-mode"><pre class="language-text"><code>upstream tomcat_server {
+	server localhost:8080 weight=3;
+	server localhost:8081;
+}
+
+server {
+    listen       80;
+    server_name  localhost;
+
+    #charset koi8-r;
+
+    #access_log  logs/host.access.log  main;
+
+    location ~ \.jsp$ {
+        proxy_pass   http://tomcat_server;
+        proxy_set_header Host $host;
+    }
+        
+    location ~ \.(html|css|js|png|gif)$ {
+        root   F:/apache-tomcat-9.0.13/webapps/ROOT;
+    }
+
+    #error_page  404              /404.html;
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br></div></div></div> <div class="page-edit"><div class="edit-link"><a href="https://github.com/gdmxzy/edit/master/Web/Nginx/nginx_tomcat.md" target="_blank" rel="noopener noreferrer">查看原文 | 编辑此页</a> <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></div> <!----></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/plmnko-blog/Web/Nginx/load_balancing_strategy.html" class="prev">
+          Nginx负载均衡及相关策略
+        </a></span> <span class="next"><a href="/plmnko-blog/Web/Vue/vuepress.html">
+          /Web/Vue/vuepress.html
+        </a>
+        →
+      </span></p></div> </div> <!----></div></div>
+    <script src="/plmnko-blog/assets/js/2.842a9afd.js" defer></script><script src="/plmnko-blog/assets/js/app.acc8b67f.js" defer></script>
+  </body>
+</html>
